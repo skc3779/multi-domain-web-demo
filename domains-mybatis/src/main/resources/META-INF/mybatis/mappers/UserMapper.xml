@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Book Mapper with Nested Results for Collection -->
+<mapper namespace="com.domain.mybatis.modules.UserMapper">
+
+	<resultMap id="userResultMap" type="User">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+		<result property="point" column="point" />
+		<!-- Enum 타입 사용 시 활용 typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" -->
+		<result property="userLevel" column="level"
+			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+	</resultMap>
+
+	<select id="findAll" resultMap="userResultMap">
+		select a.id,
+		a.name,
+		a.password,
+		a.point,
+		a.level
+		from bookstore.users a
+	</select>
+
+	<select id="findById" parameterType="Integer" resultMap="userResultMap">
+		select
+		a.id,
+		a.name,
+		a.password,
+		a.point,
+		a.level
+		from bookstore.users a
+		where a.id = #{id}
+	</select>
+
+	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert into bookstore.users( name,password,point,level )
+		values( #{name}, #{password}, #{point}, #{userLevel, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler} )
+	</insert>
+
+	<update id="update" parameterType="User">
+		update bookstore.users
+		set name = #{name},
+		password = #{password},
+		point = #{point},
+		level = #{userLevel, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="Integer">
+		delete from bookstore.users
+		where id = #{id}
+	</delete>
+
+</mapper>

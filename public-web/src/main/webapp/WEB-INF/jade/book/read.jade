@@ -1,0 +1,25 @@
+//
+   Created by seokangchun on 15. 5. 21..
+
+extends ../layout
+block title
+   title book list title
+block content
+   h1 Book List
+   table
+      thead
+         tr
+            th #
+            th 이름
+            th 저자
+            th 출판일
+            th 설명
+            th 상태
+      tbody
+            tr
+               td #{book.id}
+               td #{book.name}
+               td #{book.author}
+               td #{book.publishDate}
+               td #{comment}
+               td #{status}

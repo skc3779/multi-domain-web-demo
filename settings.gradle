@@ -1,0 +1,11 @@
+rootProject.name = 'multi-domain-web-demo'
+
+String[] modules = [
+        'commons',
+        'domains-mybatis',
+        'domains-orm',
+        'public-web'
+]
+include modules
+
+

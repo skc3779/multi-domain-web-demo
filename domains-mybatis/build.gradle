@@ -1,0 +1,13 @@
+dependencies {
+    compile project(":commons")
+
+    compile 'org.mybatis:mybatis:3.2.8'
+    compile 'org.mybatis:mybatis-spring:1.2.2'
+
+    compile 'com.zaxxer:HikariCP:2.0.1'
+    compile 'com.jolbox:bonecp:0.8.0.RELEASE'
+    compile 'com.google.guava:guava:18.0'
+
+    compile 'mysql:mysql-connector-java:5.1.35'
+    compile 'org.javassist:javassist:3.18.2-GA'
+}

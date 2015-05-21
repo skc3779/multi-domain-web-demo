@@ -1,0 +1,117 @@
+apply plugin: 'base'
+
+project.group = 'com.multi'
+project.version = '0.1.0'
+
+ext {
+    javaVersion = 1.8
+    slf4jVersion = '1.7.6'
+    springVersion = '4.1.4.RELEASE'
+    hibernateVersion = '4.3.7.Final'
+    springjpaVersion = '1.7.1.RELEASE'
+    querydslVersion  = '3.5.1'
+    aspectJVersion   = '1.8.4'
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.springsource.org/plugins-release' }
+        maven { url 'http://repo.spring.io/milestone' }
+    }
+    dependencies {
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+    }
+}
+
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'maven'
+    apply plugin: 'eclipse'
+    apply plugin: 'eclipse-wtp'
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+    apply plugin: 'propdeps-eclipse'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.springsource.org/plugins-release' }
+        maven { url 'http://repo.spring.io/milestone' }
+    }
+
+    sourceCompatibility = rootProject.ext.javaVersion
+    targetCompatibility = rootProject.ext.javaVersion
+
+    /* start sourceSets */
+    String hostname = InetAddress.getLocalHost().getHostName().toLowerCase();
+    if (hostname.endsWith('.local')) {
+        hostname = hostname.replace(".local", '')
+    }
+
+    sourceSets {
+        main.java.srcDirs = ['src/main/java']
+        test.java.srcDirs = ['src/test/java']
+        main.resources.srcDirs = ['src/main/resources', "src/main/resources-" + hostname]
+        test.resources.srcDirs = ['src/test/resources', "src/test/resources-" + hostname]
+    }
+
+    sourceSets.all {
+        set ->
+            set.allSource.srcDirs.each {
+                if (!it.exists()) {
+                    it.mkdirs()
+                }
+            }
+    }
+    /* end sourceSets */
+
+    /* start logs folder create */
+    def logsDir = new File('logs')
+    if (!logsDir.isDirectory()) {
+        logsDir.mkdirs()
+    }
+    /* end logs folder create */
+
+    dependencies {
+
+        /* logback */
+        compile "org.slf4j:slf4j-api:${rootProject.ext.slf4jVersion}"
+        compile "org.slf4j:jcl-over-slf4j:${rootProject.ext.slf4jVersion}"
+        compile "org.slf4j:log4j-over-slf4j:${rootProject.ext.slf4jVersion}"
+        compile 'ch.qos.logback:logback-classic:1.0.13'
+        compile 'ch.qos.logback:logback-core:1.0.13'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+
+        /* springmvc */
+        compile "org.springframework:spring-context:${rootProject.ext.springVersion}"
+        compile "org.springframework:spring-context-support:${rootProject.ext.springVersion}"
+        compile "org.springframework:spring-jdbc:${rootProject.ext.springVersion}"
+        compile "org.springframework:spring-tx:${rootProject.ext.springVersion}"
+        compile "org.springframework:spring-webmvc:${rootProject.ext.springVersion}"
+
+        /* lombok is getter and setter */
+        provided 'org.projectlombok:lombok:1.14.8'
+
+        /* test */
+        testCompile "junit:junit:4.11"
+        testCompile 'org.mockito:mockito-all:1.10.8'
+        testCompile 'org.hamcrest:hamcrest-all:1.3'
+        testCompile "org.springframework:spring-test:${rootProject.ext.springVersion}"
+
+    }
+
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+}
+
+task help << {
+    println '--------- gradle tomcat command help ----------------------'
+    println 'gradle :public-web:tomcatRun : local에서 tomcat8을 이용한 서버 실행'
+    println 'gradle :public-web:appRun : local에서 tomcat8을 이용한 서버 실행'
+}

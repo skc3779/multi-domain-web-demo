@@ -1,0 +1,8 @@
+# Created by .gitignore support plugin (hsz.mobi)
+.gradle
+.idea
+*.iml
+*.log
+build
+domains-orm/src/generated
+domains-orm/src/main/generated

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Book Mapper with Nested Results for Collection -->
+<mapper namespace="com.domain.mybatis.modules.BookMapper">
+    
+    <resultMap id="bookResultMap" type="Book">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="author" column="author" />
+        <result property="publishDate" column="publishDate" />
+        <result property="comment" column="comment" />
+        <!-- Enum 타입 사용 시 활용 typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" -->
+        <result property="bookStatus" column="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result property="rentUserId" column="rentUserId" />
+    </resultMap>
+        
+    <select id="findAll" resultMap="bookResultMap">
+		select a.id,
+		       a.name,
+		       a.author,
+		       a.publishDate,
+		       a.comment,
+		       a.status,
+		       a.rentUserId
+		  from bookstore.books a
+    </select>
+    
+    <select id="findById" parameterType="Integer" resultMap="bookResultMap">
+		select a.id,
+		       a.name,
+		       a.author,
+		       a.publishDate,
+		       a.comment,
+		       a.status,
+		       a.rentUserId
+		  from bookstore.books a
+		  where a.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Book" useGeneratedKeys="true" keyProperty="id">
+        insert into bookstore.books( name, author, publishDate, comment, status, rentUserId )
+		values( 
+		#{name}, 
+		#{author}, 
+		#{publishDate}, 
+		#{comment},
+		#{bookStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		#{rentUserId})
+    </insert>   
+    
+    <update id="update" parameterType="Book">
+        update bookstore.books
+		set name = #{name}, 
+			author = #{author}, 
+			publishDate = #{publishDate}, 
+			comment = #{comment}, 
+			status = #{bookStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			rentUserId = #{rentUserId} 
+		where id = #{id}
+		
+    </update>       
+    
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM BOOK WHERE ID = #{id}
+    </delete>         
+
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="30 seconds">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILEOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/Users/seokangchun/files/multi-web/logs/multi-web.log</file>
+        <maxHistory>30</maxHistory>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/Users/seokangchun/files/multi-web/logs/multi-web.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Hibernate Loggers -->
+    <logger name="org.hibernate.type">
+        <level value="ERROR" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </logger>
+    <logger name="org.hibernate.SQL">
+        <level value="ERROR" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </logger>
+
+    <!-- springframework -->
+    <logger name="org.springframework">
+        <level value="ERROR" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </logger>
+    <logger name="org.springframework.test">
+        <level value="ERROR" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </logger>
+
+    <!-- ibatis and mybatis spring -->
+    <logger name="org.apache.ibatis">
+        <level value="INFO" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </logger>
+    <logger name="org.mybatis.spring">
+        <level value="INFO" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </logger>
+
+    <!-- root loggers level -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </root>
+
+</configuration>

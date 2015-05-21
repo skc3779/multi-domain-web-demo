@@ -1,0 +1,47 @@
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.1'
+    }
+}
+
+dependencies {
+    compile project(":commons")
+    compile project(":domains-orm")
+    compile project(":domains-mybatis")
+    /* servlet */
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    providedCompile 'javax.servlet:jsp-api:2.0'
+    compile 'javax.servlet:jstl:1.2'
+
+    /* aspectj */
+    compile "org.aspectj:aspectjrt:${rootProject.ext.aspectJVersion}"
+    compile "org.aspectj:aspectjtools:${rootProject.ext.aspectJVersion}"
+    compile "org.aspectj:aspectjweaver:${rootProject.ext.aspectJVersion}"
+
+    /* jade */
+    compile 'de.neuland-bfi:spring-jade4j:0.4.0'
+
+}
+
+/* Gretty running task */
+/* url : https://github.com/akhikhl/gretty */
+/* configuration : http://akhikhl.github.io/gretty-doc/Gretty-configuration.html */
+gretty {
+    servletContainer = 'tomcat8'
+    contextPath = ''
+    managedClassReload = false
+    recompileOnSourceChange = false
+    reloadOnClassChange = false
+    reloadOnConfigChange = false
+    reloadOnLibChange = false
+    host = 'localhost'
+    httpPort = 8080
+}

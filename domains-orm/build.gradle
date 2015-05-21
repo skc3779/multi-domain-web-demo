@@ -1,0 +1,68 @@
+configurations {
+    querydslapt
+}
+
+dependencies {
+    compile project(":commons")
+    compile "org.hibernate:hibernate-core:${rootProject.ext.hibernateVersion}"
+    compile "org.hibernate:hibernate-entitymanager:${rootProject.ext.hibernateVersion}"
+    compile "org.hibernate:hibernate-validator:5.1.3.Final"
+    compile 'org.hibernate:hibernate-search-engine:4.5.1.Final'
+
+    compile "org.springframework.data:spring-data-jpa:$rootProject.ext.springjpaVersion"
+
+    compile "com.mysema.querydsl:querydsl-core:$rootProject.ext.querydslVersion"
+    compile "com.mysema.querydsl:querydsl-jpa:$rootProject.ext.querydslVersion"
+    compile "com.mysema.querydsl:querydsl-sql:$rootProject.ext.querydslVersion"
+    querydslapt "com.mysema.querydsl:querydsl-apt:$rootProject.ext.querydslVersion"
+
+    compile 'com.zaxxer:HikariCP:2.0.1'
+    compile 'com.jolbox:bonecp:0.8.0.RELEASE'
+    compile 'com.google.guava:guava:18.0'
+
+    compile 'mysql:mysql-connector-java:5.1.35'
+    compile 'org.javassist:javassist:3.18.2-GA'
+}
+
+/**
+ * Gradle에서 QueryDSL 사용을 위한 설정
+ */
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ['src/main/generated']
+        }
+    }
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.querydslapt
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += [ sourceSets.main.runtimeClasspath ]
+}
+
+clean {
+    delete sourceSets.generated.java.srcDirs
+}
+
+idea {
+    module {
+        sourceDirs += [ file('src/main/generated') ]
+    }
+}
