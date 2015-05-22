@@ -161,9 +161,10 @@ $> gradle :public-web:appRun : gretty를 이용해 임베디드 톰켓 실행
 
 ORM 샘플 페이지
 
-http://localhost:8080/orm/pub/book/list : jade 를 이용한 샘플
-http://localhost:8080/orm/api/book/list : REST API 방식 샘플
+1. http://localhost:8080/orm/pub/book/list : jade 를 이용한 샘플
+2. http://localhost:8080/orm/api/book/list : REST API 방식 샘플
 
 MyBatis 샘플 페이지
-http://localhost:8080/mybatis/pub/book/list : jade 를 이용한 샘플
-http://localhost:8080/mybatis/api/book/list : REST API 방식 샘플
+
+1. http://localhost:8080/mybatis/pub/book/list : jade 를 이용한 샘플
+2. http://localhost:8080/mybatis/api/book/list : REST API 방식 샘플
