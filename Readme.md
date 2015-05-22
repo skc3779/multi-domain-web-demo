@@ -1,5 +1,7 @@
 ## 다중 도메인, 다중 모듈 스프링 기반 샘플웹 프로젝트
 
+Springframework를 이용한 멀티모듈 프로젝트로 도메인 처리방식에 있어 ORM과 Mybatis를 이용해 비즈니스 로직을 생성 후 웹영역에서 필요에 따라 Orm 또는 Mybatis 도메인을 활용 할 수 있도록 구성한 프로젝트 샘플.
+
 ### 프로젝트 구조
 
 ```
@@ -140,6 +142,28 @@ resources
 
 ```
 
-### 데이터베이스 
+### 데이터베이스
 
-MySql 데이터베이스를 활용하였으며, DB 폴더에 bookstore.sql bookstore-data.sql을 MySql Client Tool을 이용해서 생성.
+1. MySql 데이터베이스 생성을 위해 DB 폴더의 bookstore.sql bookstore-data.sql을 MySql Client Tool을 이용해서 생성.
+2. public-web/src/main/resources 밑에 connect.properties 디비접속정보 수정.
+3. logback.xml 로그 저장경로 수정.
+
+### 컴파일 및 실행
+
+```
+$> cd multi-domain-web-demo
+$> gradle clean build  : 클린 후 빌드 (컴파일 후 테스트까지 통과) or
+   gradle clean compileJava compileGeneratedJava (컴파일만 통과)
+$> gradle :public-web:appRun : gretty를 이용해 임베디드 톰켓 실행
+```
+
+### 웹 샘플
+
+ORM 샘플 페이지
+
+http://localhost:8080/orm/pub/book/list : jade 를 이용한 샘플
+http://localhost:8080/orm/api/book/list : REST API 방식 샘플
+
+MyBatis 샘플 페이지
+http://localhost:8080/mybatis/pub/book/list : jade 를 이용한 샘플
+http://localhost:8080/mybatis/api/book/list : REST API 방식 샘플
